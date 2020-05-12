@@ -1,0 +1,257 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/
+font-awesome.min.css">
+<h2>Add new achievement</h2>
+<div class="panel" style="margin: 10px;  min-width: 1000px">
+  <div class="panel-heading" style="padding-top: 8px; padding-left: 10px"><h4>Pattern 1. Author achievement</h4></div>
+  <div class="panel-body">
+    <form [formGroup]="formAuthor" name="form" novalidate>
+      <div class="row">
+        <div class="col-3 img-container">
+
+          <div class="achievement-img">
+            <img class="achv-img img-circle img-thumbnail" src="{{this.getPhoto(this.fileNameAuthor)}}"
+                 alt="achievement img" (error)="$event.target.src=getPhoto('default_achievement_photo')"
+                 ngDefaultControl>
+          </div>
+
+          <h4>Load photo</h4>
+          <input name="loadImg" type="file" formControlName="achievementFilePath"
+                 (change)="handleFileInput($event.target.files, 'author')" style="padding-left: 3vw;">
+          <div class="form-group add-button">
+            <input class="btn btn-primary" [disabled]="formAuthor.controls.title.invalid ||
+                    formAuthor.controls.description.invalid || formAuthor.controls.numberBook.invalid || authorControl.invalid
+                    || authorControl.value.toString().trim().length == 0"
+                   (click)="addAchievementAuthor()" value="Add achievement" type="button">
+          </div>
+        </div>
+        <div class="col-5 achv-enter-fields">
+          <div class="row">
+            <div class="col-4 achv-title"><h5>Title: </h5></div>
+            <div class="col-6" [formGroup]="formAuthor"><input type="text" formControlName="title" class="form-control"
+                                                               placeholder="Enter achievement title">
+            </div>
+            <div *ngFor="let validation of validationMessages.title" class="error">
+              <div *ngIf="formAuthor.get('title').hasError(validation.type) && 	formAuthor.controls['title'].touched"
+                   class="alert alert-danger">{{validation.message}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 achv-desc"><h5>Description: </h5></div>
+            <div class="col-6" [formGroup]="formAuthor"><textarea class="form-control" formControlName="description"
+                                                                  rows="2"
+                                                                  cols="30"
+                                                                  name="text"
+                                                                  placeholder="Enter description"
+                                                                  style="margin-top: 5px"></textarea>
+            </div>
+            <div *ngFor="let validation of validationMessages.description" class="error">
+              <div *ngIf="formAuthor.get('description').hasError(validation.type) && 	formAuthor.controls['description'].touched"
+                   class="alert alert-danger">{{validation.message}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 achv-n"><h5>Number of books to achieve: </h5></div>
+            <div class="col-5 achv-input-n" [formGroup]="formAuthor"><input type="text" formControlName="numberBook"
+                                                                            class="form-control"
+                                                                            placeholder="Enter number of books">
+            </div>
+            <div *ngFor="let validation of validationMessages.numberBook" class="error">
+              <div *ngIf="formAuthor.get('numberBook').hasError(validation.type) && 	formAuthor.controls['numberBook'].touched"
+                   class="alert alert-danger">{{validation.message}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 achv-author"><h5>Author name: </h5></div>
+            <form class="col-5">
+              <input type="text" class="form-control" placeholder="Author name"
+                     [formControl]="authorControl"
+                     [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let author of filteredAuthors | async" [value]="author.fullName">
+                  {{author.fullName}}
+                </mat-option>
+              </mat-autocomplete>
+            </form>
+          </div>
+          <div class="row" style="margin-left: 1px;">
+            <h5>Books must be: </h5>
+            <label class="container">Favourite
+              <input type="radio"  name="favAuthor" value="favAuthor" [(ngModel)]="favOrReadAuthor"
+                     [ngModelOptions]="{standalone: true}" checked="checked">
+              <span class="checkmark"></span>
+            </label>
+            <label class="container">Read
+              <input type="radio" name="read" value="read" [(ngModel)]="favOrReadAuthor"
+                     [ngModelOptions]="{standalone: true}">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="panel genre" style="margin: 10px; min-width: 1000px">
+  <div class="panel-heading" style="padding-top: 8px; padding-left: 10px"><h4>Pattern 2. Genre achievement</h4></div>
+  <div class="panel-body">
+    <form [formGroup]="formGenre" name="form" novalidate>
+      <div class="row">
+        <div class="col-3 img-container">
+
+          <div class="achievement-img">
+            <img class="achv-img img-circle img-thumbnail" src="{{this.getPhoto(this.fileNameGenre)}}"
+                 alt="achievement img" (error)="$event.target.src=getPhoto('default_achievement_photo')"
+                 ngDefaultControl>
+          </div>
+
+          <h4>Load photo</h4>
+          <input name="loadImg" type="file" formControlName="achievementFilePath"
+                 (change)="handleFileInput($event.target.files, 'genre')" style="padding-left: 3vw;">
+          <div class="form-group  add-button" >
+            <input class="btn btn-primary"
+                   (click)="addAchievementGenre()" value="Add achievement" type="button" [disabled]="formGenre.controls.title.invalid ||
+                  formGenre.controls.description.invalid || formGenre.controls.numberBook.invalid || selectedGenre.trim().length == 0">
+          </div>
+        </div>
+        <div class="col-5 achv-enter-fields">
+          <div class="row">
+            <div class="col-4 achv-title"><h5>Title: </h5></div>
+            <div class="col-6" [formGroup]="formGenre"><input type="text" formControlName="title" class="form-control"
+                                                               placeholder="Enter achievement title">
+            </div>
+            <div *ngFor="let validation of validationMessages.title" class="error">
+              <div *ngIf="formGenre.get('title').hasError(validation.type) && formGenre.controls['title'].touched"
+                   class="alert alert-danger">{{validation.message}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 achv-desc"><h5>Description: </h5></div>
+            <div class="col-6" [formGroup]="formGenre"><textarea class="form-control" formControlName="description"
+                                                                  rows="2"
+                                                                  cols="30"
+                                                                  name="text"
+                                                                  placeholder="Enter description"
+                                                                  style="margin-top: 5px"></textarea>
+            </div>
+            <div *ngFor="let validation of validationMessages.description" class="error">
+              <div *ngIf="formGenre.get('description').hasError(validation.type) && 	formGenre.controls['description'].touched"
+                   class="alert alert-danger">{{validation.message}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 achv-n"><h5>Number of books to achieve: </h5></div>
+            <div class="col-5 achv-input-n" [formGroup]="formGenre"><input type="text" formControlName="numberBook"
+                                                                            class="form-control"
+                                                                            placeholder="Enter number of books">
+            </div>
+            <div *ngFor="let validation of validationMessages.numberBook" class="error">
+              <div *ngIf="formGenre.get('numberBook').hasError(validation.type) && 	formGenre.controls['numberBook'].touched"
+                   class="alert alert-danger">{{validation.message}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 achv-genre"><h5>Book Genre: </h5></div>
+            <form class="col-5">
+              <select class="selectpicker form-control" [(ngModel)]="selectedGenre" name="genre">
+                <option *ngFor="let genre of genres" [value]="genre.genreName">
+                  {{genre.genreName}}
+                </option>
+              </select>
+            </form>
+          </div>
+          <div class="row" style="margin-left: 1px;">
+            <h5>Books must be: </h5>
+            <label class="container">Favourite
+              <input type="radio"  name="favGenre" value="favGenre" [(ngModel)]="favOrReadGenre"
+                     [ngModelOptions]="{standalone: true}" checked="checked">
+              <span class="checkmark"></span>
+            </label>
+            <label class="container">Read
+              <input type="radio" name="readGenre" value="readGenre" [(ngModel)]="favOrReadGenre"
+                     [ngModelOptions]="{standalone: true}">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<h2>All achievements</h2>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Image</th>
+    <th scope="col">Title</th>
+    <th scope="col">Description</th>
+    <th scope="col">Amount</th>
+    <th scope="col">Type</th>
+    <th scope="col">Author Name</th>
+    <th scope="col">Genre</th>
+    <th scope="col">Favourite</th>
+    <th scope="col">Read</th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let achiv of allAchievements; let achivIndex= index">
+    <td>
+      <div class="num">
+        <h4>{{achivIndex + 1}}</h4>
+      </div>
+    </td>
+    <td>
+      <div class="coverDiv">
+        <img class="img-responsive" alt="no img" src="{{ this.getPhoto(achiv.image_path) }}"
+             (error)="$event.target.src=getPhoto('default_achievement_photo')">
+      </div>
+    </td>
+    <td>
+      <p>{{ achiv.title  }}</p>
+    </td>
+    <td>
+      <p>{{ achiv.description  }}</p>
+    </td>
+    <td>
+      <p>{{ achiv.amount  }}</p>
+    </td>
+    <td>
+      <p>{{ achiv.achvType  }}</p>
+    </td>
+    <td>
+      <p>{{ achiv.authorName  }}</p>
+    </td>
+    <td>
+      <p>{{ achiv.genreName  }}</p>
+    </td>
+    <td>
+      <p>{{ achiv.favourite  }}</p>
+    </td>
+    <td>
+      <p>{{ achiv.readBook  }}</p>
+    </td>
+    <td>
+      <i *ngIf="achiv.achvType == 'other'" class="fa fa-times" (click)="removeAchievement(achiv.achievementId)"
+         style="cursor: pointer;"></i>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div
+  infiniteScroll
+  [infiniteScrollDistance]="4"
+  [infiniteScrollThrottle]="1000"
+  (scrolled)="getNewAchievementPeace()">
+</div>
+<div *ngIf="!endOfAchievements" style="">
+  <i class="fa fa-refresh fa-spin fa-3x fa-fw" style="font-size: 40px; position: absolute;
+    left: 50%;
+    margin-right: -50%;"></i>
+  <span class="sr-only">Loading...</span>
+</div>
+<p *ngIf="endOfAchievements">You have loaded all achievements</p>
+
+

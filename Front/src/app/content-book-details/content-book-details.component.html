@@ -1,0 +1,114 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/
+font-awesome.min.css">
+<div class="card item-book" *ngIf="book">
+  <div class="row">
+    <img class="col-md-3 book-logo" src="{{getPhoto(this.book.imagePath)}}" alt="Image" (error)="$event.target.src=getPhoto('default_book_photo')">
+
+    <div class="col-md-8">
+      <div class="card-body book-content">
+        <h3 class="card-title">{{book.title}} - {{book.authors.join(', ')}}</h3>
+        <div class="container like-book-content">
+          <div class="row">
+            <div class="col-1" style="min-width: 30px">
+              <i *ngIf="likedBook == 1" class="fa fa-thumbs-o-up" aria-hidden="true" (click)="likeBook()" ngDefaultControl
+                 style="color: green; "></i>
+              <i *ngIf="likedBook == 0 || likedBook == -1 || !currentUser" class="fa fa-thumbs-o-up"
+                 aria-hidden="true" (click)="likeBook()" ngDefaultControl></i>
+            </div>
+            <div class="col-1" style="min-width: 30px">
+              <i *ngIf="likedBook == 1 || likedBook == 0 || !currentUser" class="fa fa-thumbs-o-down"
+                 aria-hidden="true" ngDefaultControl (click)="dislikeBook()"></i>
+              <i *ngIf="likedBook == -1" class="fa fa-thumbs-o-down" aria-hidden="true" ngDefaultControl
+                     (click)="dislikeBook()" style="color: red; "></i>
+            </div>
+            <div ngDefaultControl [(ngModel)]="bookLikes" class="col-2 like-num" style="min-width: 30px"><p style="font-size: 26px">{{bookLikes}}</p></div>
+          </div>
+        </div>
+
+        <p>Publish date: {{book.releaseDate}}</p>
+        <p>Genres: {{book.genres.join(', ')}}</p>
+        <!--    <p>Language: {{book.langua}}</p>-->
+        <p>Pages: {{book.pages}}</p>
+        <p>Description: {{book.description}} </p>
+        <div *ngIf="!announcement">
+        <div *ngIf="added; then remove else add"></div>
+        <ng-template #add>
+          <button class="btn btn-default button-add-book-to-profile" (click)="addBookToProfile()">Add book to profile
+          </button>
+        </ng-template>
+        <ng-template #remove>
+          <button class="btn btn-default button-remove-book-from-profile" (click)="removeBookFromProfile()">Remove book
+            from profile
+          </button>
+        </ng-template>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="padding-top: 20px">
+  <div class="row review-blog">
+    <div class="col-2 review-title" style="min-width: 100px"><h2>Reviews</h2></div>
+    <div class="col-md-2 button-write-review">
+      <button (click)="writeReview()">Write review</button>
+    </div>
+  </div>
+  <h5 *ngIf="collectionSize==0">No reviews</h5>
+  <div *ngIf="writeReviewFlag" class="container write-review">
+    <div class="row review-item">
+      <div class="col-md-1 ">
+        <img src="{{getPhoto(currentUser.avatarFilePath)}}" class="user-logo" alt="User"
+             (error)="$event.target.src=getPhoto('default_avatar')">
+      </div>
+      <div class="col-md-8 review-content">
+        <div class="row">
+          <div class="user-name"><h4>{{currentUser.username}}</h4></div>
+        </div>
+        <div class="row">
+          <div class="review-textarea"><textarea class="form-control" [(ngModel)]="reviewText" rows="4" cols="50" name="text"
+                                                 placeholder="Enter text..."></textarea></div>
+        </div>
+      </div>
+    </div>
+    <div class="row add-cancel-buttons">
+      <div class="col-md-1"><button class="add-button btn btn-success" (click)="addReview(reviewText)">Add</button></div>
+      <div class="col-2"><button class="cancel-button btn btn-danger" (click)="cancelReview()">Cancel</button></div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="reviews" *ngFor="let review of reviews" style="padding-top: 15px">
+  <div class="container review-item">
+    <div class="row">
+      <div class="col-1" style="min-width: 90px"><img src="{{getPhoto(review.userAvatarPath)}}" class="user-logo" alt="User"
+                              (error)="$event.target.src=getPhoto('default_avatar')"></div>
+      <div class="col-8 review-content" >
+        <div class="row" style="alignment: left">
+          <div class="col-4 user-name"><h4>{{review.userName}}</h4></div>
+          <div class="col-1"><i class="fa fa-thumbs-o-up" aria-hidden="true" style="font-size: 22px;"
+                                      (click)="likeReview(review)"></i>
+          </div>
+          <div class="col-1"><i class="fa fa-thumbs-o-down" aria-hidden="true" style="font-size: 22px;"
+                                      (click)="dislikeReview(review)"></i></div>
+          <div class="col-2"><h5 ngDefaultControl [(ngModel)]="review.rating"
+                                    style="font-size: 22px;">{{review.rating}}</h5></div>
+        </div>
+        <div class="row review-text">{{review.reviewText}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="loading" >
+  <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="finish; then up else down"></div>
+<ng-template #up><input type="image" class="paging-button" (click)="getNewPeaceOfReviews()"
+                        src="../../assets/img/upArrow.png" alt="Ще"/></ng-template>
+<ng-template #down><input type="image" class="paging-button" (click)="getNewPeaceOfReviews()"
+                          src="../../assets/img/130907.png" alt="Ще"/></ng-template>
+

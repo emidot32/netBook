@@ -1,0 +1,32 @@
+.book-logo{
+  border-style: solid;
+  border-color: black;
+  width: 100%;
+}
+
+.blog-item{
+  text-decoration: none;
+  background-color: #EDEDED;
+  transition: background-color .25s ease;
+  overflow: hidden;
+  color: #333;
+}
+
+.btn-orange {
+  color:  #fff;
+  background-color: #F0650D;
+}
+
+.btn-orange:hover{
+  background-color: #f17425;
+}
+
+.btn-gray{
+  background-color: #4B5A65;
+  text-decoration: none;
+  color: #fff;
+}
+
+.btn-gray:hover{
+  background-color: #3e4d55;
+}

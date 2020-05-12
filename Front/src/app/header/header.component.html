@@ -1,0 +1,40 @@
+<div class="container-fluid cont-color">
+  <div class="row pt-1">
+
+    <div class="logo-grid col-sm-3 align-items-center d-flex mb-2">
+      <img src="../../assets/img/label.png" alt="Example" class="img-logo img-fluid" >
+    </div>
+
+    <div class="col-sm-6 col-lg-5 align-items-center d-flex p-0">
+      <div class="container">
+        <div class="row align-items-center">
+
+          <div class="col-lg-9 col-md-8 mb-2">
+            <input class="form-control" #title type="text" placeholder="Search">
+          </div>
+
+          <div class="col-lg-3 col-md-4 mb-2">
+            <button class="btn btn-block btn-orange" (click)="newTitle(title.value)">Search</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-3 col-lg-4 align-items-center d-flex p-0">
+      <div class="container">
+        <div class="row ">
+
+          <div class="col-lg-6 mb-2">
+            <a class="btn btn-block btn-gray" [routerLink]="['/register']">Registration</a>
+          </div>
+
+          <div class="col-lg-6 mb-2">
+            <a class="btn btn-block btn-orange" [routerLink]="['/login']">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

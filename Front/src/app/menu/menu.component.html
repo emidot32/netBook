@@ -1,0 +1,37 @@
+<!--<div class="menu">
+  <div class="container">
+    <ul class="nav" routerLinkActive="active">
+      &lt;!&ndash;<li *ngFor="let i of Menu" class="menu_list"> <a class="link" [routerLink]="[{ outlets: { 'menu': [i.url] } }]"> {{i.name}} </a> </li>&ndash;&gt;
+      <li *ngFor="let i of Menu" class="menu_list"> <a class="link" [routerLink]="[i.url]"> {{i.name}} </a></li>
+      <li *ngIf="securityApprove" class="menu_list"> <a class="link" [routerLink]="['approve']"> Подтверждения </a></li>
+      <li *ngIf="securityAchievement" class="menu_list"> <a class="link" [routerLink]="['achievements']"> Achievement manager </a></li>
+    </ul>
+  </div>
+</div>-->
+
+
+
+<nav class="navbar align-items-start menu-color p-0">
+  <div class="container p-0">
+    <ul class="navbar-nav mx-auto col-12 p-0">
+      <li *ngFor="let i of Menu" class="nav-item" >
+        <a class="nav-link link" [routerLink]="[i.url]"> {{i.name}} </a>
+      </li>
+      <!-- Notifiication button with count badge  -->
+      <li class="nav-item">
+        <a class="nav-link link" [routerLink]="['notifications']"> Notifications  <span class="badge badge-primary ">{{count}}</span> </a>
+      </li>
+      <li *ngIf="securityApprove" class="nav-item">
+        <a class="nav-link link" [routerLink]="['approve']"> Confirmations </a>
+      </li>
+      <li *ngIf="securityAchievement" class="nav-item">
+        <a class="nav-link link" [routerLink]="['achievements']"> Achievement manager </a>
+      </li>
+      <li *ngIf="securitySuperAdmin" class="nav-item">
+        <a class="nav-link link" [routerLink]="['superadmin-request']"> Admin registration request </a>
+        <a class="nav-link link"  [routerLink]="['superadmin-moderator-request']"> 
+        Moderator registration request </a>
+      </li>
+    </ul>
+  </div>
+</nav>

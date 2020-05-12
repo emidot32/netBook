@@ -1,0 +1,118 @@
+.picture{
+  background-image: url("../../assets/0-header.jpg");
+  display: grid;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  align-content: center;
+}
+
+.picture::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #293A43;
+  opacity: .96;
+}
+
+.register-form textarea {
+  border: none;
+  padding: 15px 20px;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  font-style: italic;
+  outline: none;
+  transition: background-color .25s ease;
+}
+
+.register-form input {
+  background-color: #3e4d55;border: none;
+  padding: 15px 20px;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  font-style: italic;
+  outline: none;
+  transition: background-color .25s ease;
+
+}
+
+.register-form  input:focus{
+  background-color: #EDEDED;
+  color: #000;
+}
+
+.register-form  textarea:focus{
+  background-color: #EDEDED;
+  color: #000;
+}
+
+.register-form {
+  margin: 0 auto;
+  width: 25%;
+  z-index: 1;
+  color: #fff;
+  /*background-color: #293A43;*/
+}
+
+.register-form h2 {
+  text-align: center;
+  font-size: 40px;
+  /*margin: 20px 0;*/
+}
+
+.form-group{
+
+}
+
+.form-control{
+  margin: 0 auto;
+  border-radius: 0px 3px 3px 0px;
+  -moz-border-radius: 0px 3px 3px 0px;
+  -webkit-border-radius: 0px 3px 3px 0px;
+  color: #fff;
+  padding: 0 16px;
+  width: 280px;
+  height: 50px;
+  border: none;
+}
+
+.button {
+  display: inline-block;
+  border: none;
+  color: #fff;
+  text-decoration: none;
+  background-color: #F0650D;
+  padding: 7px 50px;
+  font-size: 18px;
+  font-weight: 800;
+  border-radius: 2px;
+  text-align: center;
+  position: relative;
+  outline: none;
+  transition: background-color .1s ease;
+  cursor: pointer;
+}
+
+.button:hover{
+  background-color: #f17425;
+}
+
+.gray{
+  background-color: #4B5A65;
+  margin: 0px 0px 0px 25px ;
+}
+
+.gray:hover{
+  background-color: #3e4d55;
+}
+
+.help-block{
+  color: #f49355;
+}
+
+input.ng-touched.ng-invalid {border:solid red 2px;}
+input.ng-touched.ng-valid {border:solid green 2px;}

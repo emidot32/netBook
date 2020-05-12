@@ -1,0 +1,19 @@
+.sa-form {
+	width: 500px;
+	margin-left: 400px;
+	margin-top:20px;
+	margin-right: ;
+	display: flex;
+	flex-direction: column;
+	padding: 0 auto;
+	border: 3px grey solid;
+}
+
+.sa-h2 {
+	margin-left: 400px;
+	margin-top:20px;
+	margin-right: ;
+	display: flex;
+	flex-direction: column;
+	padding: 0 auto;
+}

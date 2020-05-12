@@ -1,0 +1,13 @@
+.book-logo{
+  border-style: solid;
+  border-color: black;
+  width: 90%;
+}
+
+.blog-item{
+  text-decoration: none;
+  background-color: #EDEDED;
+  transition: background-color .25s ease;
+  overflow: hidden;
+  color: #333;
+}

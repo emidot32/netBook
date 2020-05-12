@@ -1,0 +1,42 @@
+<div class="picture">
+  <div class="recovery-form container">
+    <form [formGroup]="recoveryForm" name="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="row">
+        <div class="col-sm-8 col-md-6 col-lg-4 mx-auto">
+          <h2>Recovery password</h2>
+          <div class="form-group">
+            <input type="password" class="form-control"
+                   [ngClass]="{'is-invalid':  recoveryForm.get('passwordFirst').invalid &&
+                    recoveryForm.controls['passwordFirst'].touched,
+                   'is-valid': recoveryForm.get('passwordFirst').valid}" name="passwordFirst" placeholder="Password"
+                   formControlName="passwordFirst" required/>
+            <div class="invalid-feedback"
+                 *ngIf="recoveryForm.get('passwordFirst').invalid && recoveryForm.controls['passwordFirst'].touched">
+              {{getValidationMessage('passwordFirst').message}}
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control"
+                   [ngClass]="{'is-invalid':  recoveryForm.get('passwordSecond').invalid &&
+                   recoveryForm.controls['passwordSecond'].touched,
+                   'is-valid': recoveryForm.get('passwordSecond').valid}" name="passwordSecond" placeholder="Confirm password"
+                   formControlName="passwordSecond" required/>
+            <div class="invalid-feedback"
+                 *ngIf="recoveryForm.get('passwordSecond').invalid && recoveryForm.controls['passwordSecond'].touched">
+              {{getValidationMessage('passwordSecond').message}}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group mb-3 col-sm-6">
+              <button [disabled]="recoveryForm.invalid" class="btn btn-block btn-orange">Recovery</button>
+            </div>
+            <div class="form-group col-sm-6">
+              <a class="btn btn-block btn-gray" [routerLink]="['/home/announcement']">Back</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <app-alert></app-alert>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+
+.book-logo {
+  width: 90%;
+  height: 90%;
+}
+.item-book{
+  padding-bottom: 20px;
+  padding-top: 20px;
+  margin: 10px;
+  padding-left: 10px;
+}
+
+.book-content h3 {
+  font-size: 25px;
+  padding-bottom: 40px;
+  margin: 0;
+}
+.book-content p {
+  font-size: 20px;
+}
+
+.button-add-book-to-profile {
+  background-color: palegreen;
+  border-radius: 10px;
+  height: 60px;
+
+}
+.button-remove-book-from-profile {
+  background-color: tomato;
+  border-radius: 10px;
+  height: 60px;
+
+}
+.review-item {
+  padding-left: 2px;
+  padding-top: 10px;
+
+}
+.user-logo {
+  border-radius: 80%;
+  -moz-border-radius: 80%;
+  -webkit-border-radius: 80%;
+  border-style: solid;
+  border-color: antiquewhite;
+  height: 90px;
+  width: 90px;
+}
+.review-blog {
+  padding-bottom: 20px;
+}
+
+.button-write-review button{
+  border-radius: 10px;
+  background-color: skyblue;
+  height: 40px;
+  width: 190px;
+
+}
+.add-button {
+  height: 40px;
+  width: 90px;
+  border-radius: 10px;
+}
+.cancel-button {
+  height: 40px;
+  width: 90px;
+  border-radius: 10px;
+}
+.review-text {
+  font-size: 15px;
+  color: #4B5A65;
+  padding-left: 20px;
+
+}
+.review-textarea {
+  font-size: 15px;
+  color: #4B5A65;
+}
+.rating {
+  grid-column: 2;
+}
+.review-content {
+  padding-left: 30px;
+  max-width: 500px;
+}
+.add-cancel-buttons {
+  padding-top: 10px;
+}
+.rating h5{
+  padding-left: 10px;
+  grid-column: 2;
+}
+.user-name {
+  grid-column: 1;
+}
+.paging-button {
+  outline: none;
+  margin-left: 21vw;
+  height: 30px;
+  width: 60px;
+}
+.fa {
+  font-size: 30px;
+}
+

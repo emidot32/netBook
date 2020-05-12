@@ -1,0 +1,102 @@
+<div class="container p-4">
+
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-gray" (click)="showFilters()">filters</button>
+    </div>
+  </div>
+
+  <div id="collapseExample" [ngbCollapse]="isCollapsed">
+    <div class="card">
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col-md">
+            <mat-form-field>
+              <mat-label>Genre</mat-label>
+              <mat-select [(value)]="selectedGenre">
+                <mat-option [value]="-1">All</mat-option>
+                <mat-option *ngFor="let genre of genres" [value]="genre.genreId">
+                  {{genre.genreName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md">
+            <form>
+              <input class="form-control" type="text" placeholder="author" [formControl]="control" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let author of filteredAuthors | async" [value]="author.fullName">
+                  {{author.fullName}}
+                </mat-option>
+              </mat-autocomplete>
+            </form>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md">
+            <div *ngIf="dateFrom">
+              <mat-form-field>
+                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerFrom" placeholder="Announcement date from" [formControl]="dateFrom">
+                <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                <mat-datepicker #pickerFrom></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md">
+            <div *ngIf="dateTo">
+              <mat-form-field>
+                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerTo" placeholder="Announcement date to" [formControl]="dateTo">
+                <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+                <mat-datepicker #pickerTo></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-orange" (click)="setFiltered()">apply filters</button>
+
+      </div>
+    </div>
+  </div>
+
+  <app-loading-spinner class="d-flex justify-content-center" *ngIf="!currentPage"></app-loading-spinner>
+
+  <div *ngIf="currentPage">
+    <div class="row p-4">
+      <div class="test col-md-6" *ngFor="let book of currentPage.content" >
+        <a class="blog-item m-2"  [routerLink]="[book.bookId]">
+          <div class="container blog-item-color">
+            <div class="row">
+              <div class="col-6">
+                <div class="book-image-grid">
+                  <img src="{{getPhoto(book.imagePath)}}" alt="Image" class="book-logo"
+                       (error)="$event.target.src=getPhoto('default_book_photo')">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="book-item-content" >
+                  <h3>{{book.title}} - {{book.authors.join(', ')}}</h3>
+                  <p>Likes: {{book.likes}}</p>
+                  <p>Genres: {{book.genres.join(', ')}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <ngb-pagination class="d-flex justify-content-center"
+                    [collectionSize]="currentPage.totalElements"
+                    [pageSize]="pageSize"
+                    [(page)]="pageNumber"
+                    [boundaryLinks]="true"
+                    (pageChange)="onPageChanged()">
+    </ngb-pagination>
+  </div>
+
+</div>

@@ -1,0 +1,31 @@
+<div class="picture">
+  <div class="recovery-form container">
+    <form [formGroup]="recoveryForm" name="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="row">
+        <div class="col-sm-8 col-md-6 col-lg-4 mx-auto">
+          <h2>Recovery password</h2>
+          <div class="form-group">
+            <input type="text" class="form-control" [ngClass]="{'is-invalid':  recoveryForm.get('userEmail').invalid
+             && recoveryForm.controls['userEmail'].touched,
+                   'is-valid': recoveryForm.get('userEmail').valid}" name="userEmail" placeholder="Enter Email"
+                   formControlName="userEmail"
+                   required/>
+            <div class="invalid-feedback"
+                 *ngIf="recoveryForm.get('userEmail').invalid && recoveryForm.controls['userEmail'].touched">
+              {{getValidationMessage('userEmail').message}}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group mb-3 col-sm-6">
+              <button [disabled]="recoveryForm.invalid" class="btn btn-block btn-orange">Recovery</button>
+            </div>
+            <div class="form-group col-sm-6">
+              <a class="btn btn-block btn-gray" [routerLink]="['/home/announcement']">Back</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <app-alert></app-alert>
+  </div>
+</div>

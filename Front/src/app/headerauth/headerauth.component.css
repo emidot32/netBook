@@ -1,0 +1,34 @@
+.img-logo {
+  width: 100%;
+  /*width: 400px;
+  height: 100px;*/
+}
+
+.btn-orange {
+  color:  #fff;
+  background-color: #F0650D;
+}
+
+.btn-orange:hover{
+  background-color: #f17425;
+}
+
+.btn-gray{
+  background-color: #4B5A65;
+  text-decoration: none;
+  color: #fff;
+}
+
+.btn-gray:hover{
+  background-color: #3e4d55;
+}
+
+.cont-color{
+  background-color: #1a252b;
+}
+
+.header-user p{
+  margin:0;
+  font-size: 20px;
+  color: #fff;
+}

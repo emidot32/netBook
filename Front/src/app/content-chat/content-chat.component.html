@@ -1,0 +1,250 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/
+font-awesome.min.css">
+<div class="messaging">
+  <div class="inbox_msg">
+	<div class="inbox_people">
+	  <div class="headind_srch">
+		<div class="chats_heading">
+		  <h4>Chats <button *ngIf="activeChat" type="button" class="btn btn-light btn-settings"
+                        data-toggle="modal" data-target="#editChatModal" (click)="prepareEditMenu()">
+        <i class="fa fa-cog"></i></button></h4>
+		</div>
+
+	  </div>
+	  <div class="inbox_chat scroll">
+	  	<div *ngFor="let chat of chats">
+			<div class="chat_list"  (click)="onClick(chat.chatId)" tabindex="1"
+           [ngClass]="{ 'chat_list_focus': chat.chatId===activeChat}">
+			  <div class="chat_people">
+				<div class="chat_img"> <img src="{{this.getPhoto(chat.chatAvatar)}}"
+                        (error)="$event.target.src=getPhoto('default_chat_avatar')"alt="no"> </div>
+				<div class="chat_ib">
+				  <h5>{{ chat.chatName }}</h5>
+				</div>
+			  </div>
+			</div>
+		</div>
+		<div class="chat_list" data-toggle="modal" data-target="#newChatModal" tabindex="1" (click)="clearCheckedFriendsAndName()">
+			  <div class="chat_people">
+				<div class="chat_img">
+					<i class="fa fa-plus"></i>
+				</div>
+				<div class="chat_ib">
+				  <h5>Create new chat</h5>
+				</div>
+			  </div>
+			</div>
+	  </div>
+	</div>
+	<div class="mesgs">
+	  <div class="msg_history" #msg_history [scrollTop]="msg_history.scrollHeight">
+	  	<!--------------------------->
+      <div *ngIf="!activeChat" class="not-selected">
+        <h6>Please select a chat to start messaging</h6>
+      </div>
+      <div *ngIf="activeChat && messages.length === 0" class="not-selected" style="left: 60%">
+        <h6>No messages here yet...</h6>
+      </div>
+		<div *ngFor="let message of messages">
+			<div *ngIf="message.fromName == this.username">
+				<div class="outgoing_msg">
+			  		<div class="sent_msg">
+						<p> {{message.message}} </p>
+						<span class="time_date"> {{message.dateTimeSend | date:'medium' }}</span>
+					</div>
+				</div>
+			</div>
+			<div *ngIf="message.fromName != this.username">
+				<div class="incoming_msg">
+					<div class="incoming_msg_img"> <img src="{{ this.getAvatarPathByLogin(message.fromName) }}"
+                       (error)="$event.target.src=getPhoto('default_avatar')"alt="no"> </div>
+					<div class="received_msg">
+						<div class="received_withd_msg">
+							<p> {{message.message}} </p>
+							<span class="time_date">
+							<a href="homeath/profile/{{message.fromName}}" style="color: #646464;">{{message.fromName}}</a> |
+                {{message.dateTimeSend | date:'medium'}} </span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- -------------------------------------------- -->
+	  </div>
+	  <div class="type_msg">
+		<div class="input_msg_write">
+		  <input [(ngModel)]="msg" name="msg" type="text" class="write_msg" placeholder="Type a message" />
+		  <button class="msg_send_btn" type="button" (click)="sendMessage()" ><i class="fa fa-paper-plane"></i></button>
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
+
+<!-- add new chat Modal -->
+<div class="modal fade" id="newChatModal" tabindex="-1" role="dialog" aria-labelledby="newChatModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="newChatModalLabel">Creation new chat</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="chat-name" class="col-form-label">Chat name*</label>
+						<input type="text" class="form-control" id="chat-name" [(ngModel)]="chatName"
+                   [pattern]="namePattern" #uname="ngModel" name="chat-name">
+            <label *ngIf="chatName.length == 1" for="chat-name" class="col-form-label" style="color: red;">
+              Chat name must be at least 2 characters long
+            </label>
+            <label *ngIf="chatName.length >= 15" for="chat-name" class="col-form-label" style="color: red;">
+              Chat name cannot be more than 15 characters long
+            </label>
+            <label *ngIf="uname.errors?.pattern" for="chat-name" class="col-form-label" style="color: red;">
+              Chat name must contain only numbers and letters
+            </label>
+
+					</div>
+						<p>Add to chat:</p>
+						<div *ngFor="let friend of this.friends">
+							<div class="chat_list" tabindex="1" (click)="onClickCheckBox(friend)">
+								<div class="chat_people">
+									<div class="chat_img" >
+										<img style="width: 7vmin; height: 7vmin;" src="{{ this.getPhoto(friend.avatarFilePath) }}"
+                         (error)="$event.target.src=getPhoto('default_avatar')"alt="no"/>
+									</div>
+									<div class="chat_ib" >
+										<h5 style="display: inline-block;">{{ friend.username }}  </h5>
+										<div class="round">
+											<input disabled type="checkbox" id="checkbox{{friend.username}}"
+                             name="checkbox{{friend.username}}" [(ngModel)]="friend.checked" />
+											<label for="checkbox{{friend.username}}" ></label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" id="closeModal" data-dismiss="modal">Back</button>
+				<button [disabled]="chatName.length < 2 || chatName.length >= 15 || uname.errors?.pattern"
+                type="button" class="btn btn-primary" (click)="createNewChat()"
+                data-dismiss="modal">Create</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- edit chat Modal -->
+<div class="modal fade" id="editChatModal" tabindex="-1" role="dialog" aria-labelledby="editChatModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="editChatModalLabel"> {{ chatName }}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="chat-name2" class="col-form-label">Chat name*</label>
+						<input type="text" [(ngModel)]="editedChatName" name="chat-name" class="form-control" id="chat-name2"
+                   [pattern]="namePattern" #unameEdit="ngModel">
+            <label *ngIf="editedChatName.length == 1" for="chat-name2" class="col-form-label" style="color: red;">
+              Chat name must be at least 2 characters long
+            </label>
+            <label *ngIf="editedChatName.length >= 15" for="chat-name2" class="col-form-label" style="color: red;">
+              Chat name cannot be more than 15 characters long
+            </label>
+            <label *ngIf="unameEdit.errors?.pattern" for="chat-name2" class="col-form-label" style="color: red;">
+              Chat name must contain only numbers and letters
+            </label>
+					</div>
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="home-tab0" data-toggle="tab" (click)="editChatTab = 0" role="tab"
+                 aria-controls="home" aria-selected="true" [ngClass]="{ 'active':editChatTab===0}">Add members</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link " id="home-tab1" data-toggle="tab" (click)="editChatTab = 1" role="tab"
+                 aria-controls="home" aria-selected="true" [ngClass]="{ 'active':editChatTab===1}">Remove members</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link " id="home-tab2" data-toggle="tab" (click)="editChatTab = 2" role="tab"
+                 aria-controls="home" aria-selected="true" [ngClass]="{ 'active':editChatTab===2}">Change photo</a>
+						</li>
+					</ul>
+
+						<div *ngIf="editChatTab == 2">
+              <div class="chat-img">
+                <div>
+                  <img src="{{ this.activeChatAvatar }}"
+                       (error)="$event.target.src=getPhoto('default_chat_avatar')" alt="img"/>
+                  <h6>Change photo</h6>
+                  <input name="changeImg" type="file"
+                         (change)="handleFileInput($event.target.files)" style="">
+                </div>
+              </div>
+						</div>
+						<div *ngIf="editChatTab == 1">
+						<div *ngFor="let member of this.chatMembers">
+							<div class="chat_list"  tabindex="1" (click)="onClickCheckBox(member)">
+								<div class="chat_people">
+									<div class="chat_img">
+										<img style="width: 7vmin; height: 7vmin;" src="{{ this.getPhoto(member.avatarFilePath) }}"
+                         (error)="$event.target.src=getPhoto('default_avatar')"alt="no"/>
+									</div>
+									<div class="chat_ib">
+										<h5 style="display: inline-block;">{{ member.username }}</h5>
+										<div class="round" style="display: inline-block;">
+											<input disabled type="checkbox" name="checkboxEditChat{{member.username}}"
+                             [(ngModel)]="member.checked" id="checkboxEditChat{{member.username}}" />
+											<label for="checkboxEditChat{{member.username}}"></label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+						<div *ngIf="editChatTab == 0">
+						<div *ngFor="let friend of this.friendsWhoAbleToAdd">
+							<div class="chat_list" tabindex="2" (click)="onClickCheckBox(friend)">
+								<div class="chat_people">
+									<div class="chat_img">
+										<img style="width: 7vmin; height: 7vmin;" src="{{ this.getPhoto(friend.avatarFilePath) }}"
+                         (error)="$event.target.src=getPhoto('default_avatar')" alt="no"/>
+									</div>
+									<div class="chat_ib">
+										<h5 style="display: inline-block;">{{ friend.username }}</h5>
+										<div  style="display: inline-block;" class="round">
+											<input disabled type="checkbox" id="checkboxEditChat{{friend.username}}"
+                             name="checkboxEditChat{{friend.username}}" [(ngModel)]="friend.checked"/>
+											<label for="checkboxEditChat{{friend.username}}"></label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+						<div *ngIf="editChatTab == 0">
+
+						</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+                id="closeModal2" data-dismiss="modal">Back</button>
+				<button [disabled]="editedChatName.length < 2 || editedChatName.length >= 15 || unameEdit.errors?.pattern"
+                type="button" class="btn btn-primary"
+                (click)="editChat()" data-dismiss="modal">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+

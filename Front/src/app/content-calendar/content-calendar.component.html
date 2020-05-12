@@ -1,0 +1,16 @@
+
+
+
+<button class="btn m-2 btn-orange" (click)="showPersonalize()">Personalize</button>
+<button class="btn m-2 btn-orange" (click)="showAll()">Full</button>
+<full-calendar
+  defaultView="dayGridMonth"
+  [header]="{
+        left: 'prev,next',
+        center: 'title',
+        right: 'today'
+      }"
+  [plugins]="calendarPlugins"
+  [weekends]="true"
+  [events]="calendarEvents"
+></full-calendar>

@@ -1,0 +1,40 @@
+<div class="container p-4">
+
+  <app-loading-spinner class="d-flex justify-content-center" *ngIf="!currentPage"></app-loading-spinner>
+
+  <div *ngIf="currentPage">
+    <div class="row p-4">
+      <div class="test col-md-6" *ngFor="let book of currentPage.content" >
+        <a class="blog-item m-2"  [routerLink]="[book.bookId]">
+          <div class="container blog-item-color">
+            <div class="row">
+              <div class="col-6">
+                <div class="book-image-grid">
+                  <img src="{{getPhoto(book.imagePath)}}" alt="Image" class="book-logo"
+                       (error)="$event.target.src=getPhoto('default_book_photo')">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="book-item-content" >
+                  <h3>{{book.title}} - {{book.authors.join(', ')}}</h3>
+                  <p>Likes: {{book.likes}}</p>
+                  <p>Genres: {{book.genres.join(', ')}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <ngb-pagination class="d-flex justify-content-center"
+                    [collectionSize]="currentPage.totalElements"
+                    [pageSize]="pageSize"
+                    [(page)]="pageNumber"
+                    [boundaryLinks]="true"
+                    (pageChange)="onPageChanged()">
+    </ngb-pagination>
+  </div>
+
+</div>
+

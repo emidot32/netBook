@@ -1,0 +1,28 @@
+.container {
+    width: 100vw;
+    padding-top: 3%;
+}
+.page-header {
+    padding-left: 7%;
+}
+.achievement-img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+.achievement-img img{
+    width: 30vmin;
+    height: 30vmin;
+    object-fit: cover;
+    border-radius: 10%;
+}
+.img-container {
+	text-align: center;
+}
+
+.help-block{
+  color: #f49355;
+}
+input.ng-touched.ng-invalid {border:solid #f49355 2px;}
+input.ng-touched.ng-valid {border:solid #548007 2px;}

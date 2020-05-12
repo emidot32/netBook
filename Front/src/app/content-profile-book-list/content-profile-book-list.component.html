@@ -1,0 +1,281 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/
+font-awesome.min.css">
+<div class="container col-md-11.5">
+	<h4 class="text-left pl-3 mt-3">List of books</h4><br>
+	<section class="search-sec">
+		<form action="#" method="post" novalidate="novalidate">
+			<div class="row ">
+				<div class="col-lg-12">
+					<div class="row">
+						<div  #searchInput class="col-lg-9 col-md-3 col-sm-12 p-0">
+							<input #searchInput (input)="onSearchChange($event.target.value)" type="text" class="form-control search-slt" placeholder="Search books" >
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-12 p-0">
+							<button type="button" class="btn btnSearch" (click)="find()">Search</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</section>
+	<div class="row justify-content-center">
+
+		<div class="col-md-12">
+			<div class="panel-heading">
+				<p>
+					<a data-toggle="collapse" href="#collapseSettings" role="button" aria-expanded="false" aria-controls="collapseSettings">
+						Settings
+					</a>
+					<a *ngIf="this.disableEdit" data-toggle="collapse" href="#collapseBatchEdit" role="button" aria-expanded="false" aria-controls="collapseBatchEdit" (click)="enableBathEdit = !enableBathEdit">
+						Batch edit
+					</a>
+				</p>
+				<div class="collapse" id="collapseSettings">
+					<div class="card card-body">
+						<div class="row">
+							<div class="shelves">
+                <div>
+                  <p>Shelves</p>
+                </div>
+
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="shalvesReading" [(ngModel)]="searchParams.reading" (ngModelChange)="find()" checked>
+									<label class="custom-control-label" for="shalvesReading">
+										Reading
+									</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="shalvesRead" [(ngModel)]="searchParams.read" (ngModelChange)="find()">
+									<label class="custom-control-label" for="shalvesRead">
+										Read
+									</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="shalvesFavourite" [(ngModel)]="searchParams.favourite" (ngModelChange)="find()">
+									<label class="custom-control-label" for="shalvesFavourite">
+										Favourite
+									</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="shalvesNotSet" [(ngModel)]="searchParams.notSet" (ngModelChange)="find()">
+									<label class="custom-control-label" for="shalvesNotSet">
+										Not set
+									</label>
+								</div>
+							</div>
+
+							<div class="visibleColumns">
+								<p>Visible columns</p>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="visibleTitle" [(ngModel)]="visibleTitle">
+									<label class="custom-control-label" for="visibleTitle">
+										Title
+									</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="visibleAuthors" [(ngModel)]="visibleAuthors">
+									<label class="custom-control-label" for="visibleAuthors">
+										Authors
+									</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="visibleLikes" [(ngModel)]="visibleLikes">
+									<label class="custom-control-label" for="visibleLikes">
+										Likes
+									</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="visibleShalves" [(ngModel)]="visibleShelves">
+									<label class="custom-control-label" for="visibleShalves">
+										Shelves
+									</label>
+								</div>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="visibleDatePub" [(ngModel)]="visibleDatePub">
+									<label class="custom-control-label" for="visibleDatePub">
+										Date publication
+									</label>
+								</div>
+							</div>
+
+						</div>
+						<hr>
+						<p> Other </p>
+						<div class="other">
+							<label for="dropdownMenuSort" class="labelDiv">Sort by: </label>
+							<select class="browser-default custom-select dropdown col-md-2" id="dropdownMenuSort"
+                      [(ngModel)]="searchParams.sortBy" (ngModelChange)="find()">
+								<option [value]="_BookParam.TITLE" selected>Title</option>
+								<option [value]="_BookParam.LIKES">Likes</option>
+							</select>
+
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="inlineRadioOptions"
+                       id="inlineRadio1" [value]="_Order.ASC" [(ngModel)]="searchParams.order" (ngModelChange)="find()">
+								<label class="form-check-label" for="inlineRadio1">Asc.</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="inlineRadioOptions"
+                       id="inlineRadio2" [value]="_Order.DESC" [(ngModel)]="searchParams.order" (ngModelChange)="find()">
+								<label class="form-check-label" for="inlineRadio2">Desc.</label>
+							</div>
+						</div>
+						<a class="closeCollapse" data-toggle="collapse" href="#collapseSettings" role="button" aria-expanded="false" aria-controls="collapseSettings">
+							Close
+						</a>
+					</div>
+
+				</div>
+				<div class="collapse" id="collapseBatchEdit">
+					<div class="card card-body">
+						<div class="other">
+							<label for="dropdownMenuBatchEdit" class="labelDiv">Shelf: </label>
+							<select class="browser-default custom-select dropdown col-md-2" id="dropdownMenuBatchEdit"
+                      [(ngModel)]="batchEditShelf">
+								<option [value]="_Shelf.READ" selected>Read</option>
+								<option [value]="_Shelf.READING">Reading</option>
+								<option [value]="_Shelf.FAVOURITE">Favourites</option>
+							</select>
+              <div>
+							<a class="labelDiv" (click)="addBookBatchTo(batchEditShelf)">add books to this shelf </a>
+							<p class="labelDiv divider">|</p>
+							<a class="labelDiv" (click)="removeBookBatchFrom(batchEditShelf)">remove books from this shelf </a>
+							<p class="labelDiv divider" >|</p>
+							<a class="labelDiv" (click)="removeBookBatch()">remove books from all shelves </a>
+              </div><br><br><br><hr>
+							<a class="select" (click)="selectAll()">select all</a>
+							<p class=" dividr" >|</p>
+							<a class="select" (click)="selectNone()">select none </a>
+
+						</div>
+						<a class="closeCollapse" data-toggle="collapse" href="#collapseBatchEdit" role="button" aria-expanded="false" aria-controls="collapseBatchEdit" (click)="enableBathEdit = !enableBathEdit">
+							Close
+						</a>
+					</div>
+
+				</div>
+
+			</div>
+			<div *ngIf="books.length == 0" class="empty-result">
+        List of books is empty.
+				<br>
+				<a href="homeath/recommendations">
+          Go to recommendations
+				</a>
+			</div>
+			<div class="panel-body" *ngIf="books.length != 0">
+				<div class="row ">
+					<table class="table">
+						<thead>
+							<tr>
+								<th *ngIf="enableBathEdit" scope="col"></th>
+								<th scope="col">Cover</th>
+								<th *ngIf="visibleTitle" scope="col">Title</th>
+								<th *ngIf="visibleAuthors" scope="col">Authors</th>
+								<th *ngIf="visibleLikes" scope="col">Likes</th>
+								<th *ngIf="visibleShelves" scope="col">Shelves</th>
+								<th *ngIf="visibleDatePub" scope="col">Date publication</th>
+								<th *ngIf="this.disableEdit" scope="col"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let book of this.books">
+								<td *ngIf="enableBathEdit" style="width: 4%">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" id="visibleShalves{{book.bookId}}" [(ngModel)]="book.checked">
+										<label class="custom-control-label" for="visibleShalves{{book.bookId}}">
+										</label>
+									</div>
+								</td>
+								<td>
+									<div class="coverDiv">
+										<img class="img-responsive" alt="no img" src="{{ this.getPhoto(book.imagePath) }}"
+                         (error)="$event.target.src=getPhoto('default_book_photo')">
+									</div>
+								</td>
+								<td *ngIf="visibleTitle">
+									<a routerLink="/homeath/books/{{ book.bookId }}">
+										{{ book.title  }}
+									</a>
+								</td>
+								<td *ngIf="visibleAuthors">
+									<div class="authors" *ngFor="let author of book.authors">
+                    <a (click)="navigateToAuthor(author)" style="cursor: pointer">
+                      {{ author  }}</a>
+									</div>
+								</td>
+
+								<td *ngIf="visibleLikes">
+									{{ book.likes  }}
+								</td>
+
+								<td *ngIf="visibleShelves">
+									<p *ngIf="book.favourite">Favourite</p>
+									<p *ngIf="book.reading">Reading</p>
+									<p *ngIf="book.read">Read</p>
+
+									<div class="dropdown show">
+										<a *ngIf="this.disableEdit" style="font-size: 12px;" id="dropdownMenuEdit" data-toggle="dropdown" class="dropdown-toggle">[Edit]</a>
+										<div class="dropdown">
+											<div class="dropdown-menu" aria-labelledby="dropdownMenuEdit">
+
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input" id="reading{{book.bookId}}"
+                                 [(ngModel)]="book.reading" (click)="changeBookShelfReading(book)">
+													<label class="custom-control-label" for="reading{{book.bookId}}">
+														Reading
+													</label>
+												</div>
+
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input" id="read{{book.bookId}}" [(ngModel)]="book.read" (click)="changeBookShelfRead(book)">
+													<label class="custom-control-label" for="read{{book.bookId}}">
+														Read
+													</label>
+												</div>
+
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input" id="favourite{{book.bookId}}" [(ngModel)]="book.favourite" (click)="changeBookShelfFavourite(book)">
+													<label class="custom-control-label" for="favourite{{book.bookId}}">
+														Favourites
+													</label>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</td>
+
+								<td style="width: 12%" *ngIf="visibleDatePub">
+									{{ book.releaseDate  }}
+								</td>
+								<td *ngIf="this.disableEdit">
+									<i class="fa fa-times" (click)="removeBook(book.bookId)" style="cursor: pointer;"></i>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<br><br>
+		<div
+		infiniteScroll
+		[infiniteScrollDistance]="3"
+		[infiniteScrollThrottle]="1000"
+		(scrolled)="onPageChanged()">
+	</div>
+	<div *ngIf="!endOfBooks">
+		<i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+		<span class="sr-only">Loading...</span>
+	</div>
+
+
+	<div *ngIf="endOfBooks" >
+		<hr>
+	</div>
+</div>
+</div>
+

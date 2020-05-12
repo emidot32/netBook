@@ -1,0 +1,60 @@
+<div class="picture">
+  <div class="register-form container">
+    <form [formGroup]="registerForm" name="form" (ngSubmit)="register()" novalidate>
+      <div class="row">
+        <div class="col-sm-8 col-md-6 col-lg-4 mx-auto">
+          <h2>Registration</h2>
+
+          <div class="form-group">
+            <input type="text" class="form-control"
+                   [ngClass]="{'is-invalid':  registerForm.get('userName').invalid && registerForm.controls['userName'].touched,
+                   'is-valid': registerForm.get('userName').valid}"
+                   name="userName" placeholder="Enter login" formControlName="userName"
+                   required/>
+            <div class="invalid-feedback"
+                 *ngIf="registerForm.get('userName').invalid && registerForm.controls['userName'].touched">
+              {{getValidationMessage('userName').message}}
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" [ngClass]="{'is-invalid':  registerForm.get('userSurname').invalid && registerForm.controls['userSurname'].touched,
+                   'is-valid': registerForm.get('userSurname').valid}" name="userSurname" placeholder="Enter your name"
+                   formControlName="userSurname" required/>
+            <div class="invalid-feedback"
+                 *ngIf="registerForm.get('userSurname').invalid && registerForm.controls['userSurname'].touched">
+              {{getValidationMessage('userSurname').message}}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="text" class="form-control" [ngClass]="{'is-invalid':  registerForm.get('userEmail').invalid && registerForm.controls['userEmail'].touched,
+                   'is-valid': registerForm.get('userEmail').valid}" name="userEmail" placeholder="Enter Email" formControlName="userEmail"
+                   required/>
+            <div class="invalid-feedback"
+                 *ngIf="registerForm.get('userEmail').invalid && registerForm.controls['userEmail'].touched">
+              {{getValidationMessage('userEmail').message}}
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" [ngClass]="{'is-invalid':  registerForm.get('userPassword').invalid && registerForm.controls['userPassword'].touched,
+                   'is-valid': registerForm.get('userPassword').valid}" name="userPassword" placeholder="Password"
+                   formControlName="userPassword" required/>
+            <div class="invalid-feedback"
+                 *ngIf="registerForm.get('userPassword').invalid && registerForm.controls['userPassword'].touched">
+              {{getValidationMessage('userPassword').message}}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group mb-3 col-sm-6">
+              <button [disabled]="registerForm.invalid" class="btn btn-block btn-orange">Register</button>
+            </div>
+            <div class="form-group col-sm-6">
+              <a class="btn btn-block btn-gray" [routerLink]="['/home/announcement']">Back</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <app-alert></app-alert>
+  </div>
+</div>

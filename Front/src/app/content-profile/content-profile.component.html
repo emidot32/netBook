@@ -1,0 +1,298 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/
+font-awesome.min.css">
+<div class="container emp-profile">
+	<form method="post">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="profile-img">
+          <a>
+            <img src="{{ this.getPhoto(this.user.avatarFilePath) }}" data-toggle="modal" data-target="#imageModal"
+                 (error)="$event.target.src=getPhoto('default_avatar')" alt="img"/>
+          </a>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="profile-head">
+					<h5>
+						{{ this.user.username }}
+					</h5>
+					<h6 style="padding-bottom: 15px;">
+						{{ this.user.status }}
+					</h6>
+					<span class="proile-rating" >
+						Achievements :
+						<div *ngFor="let achievement of this.achievements" style="white-space: nowrap; display: inline;" title="{{ achievement.title }}
+{{ achievement.description }}">
+							<img src="{{ this.getPhoto(achievement.image_path) }}"/>
+						</div>
+
+					</span>
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" a
+                 ria-selected="true">About</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-2" *ngIf="this.canEditable">
+				<input  type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit"
+				(click)="goEdit()"/>
+			</div>
+			<div class="col-md-2" *ngIf="!this.canEditable && this.isFriend == -1">
+				<input  type="submit" class="profile-edit-btn" name="btnAddMore" value="Add to friend"
+				(click)="addFriend()"/>
+			</div>
+			<div class="col-md-2" *ngIf="!this.canEditable && this.isFriend == 1">
+				<input  type="submit" class="profile-edit-btn" name="btnAddMore" value="Remove from friends"
+				(click)="deleteFriend()"/>
+			</div>
+			<div class="col-md-2" *ngIf="!this.canEditable && this.isFriend == 0">
+				<input  type="submit" class="profile-edit-btn" name="btnAddMore" value="Unsubscribe"
+				(click)="deleteFriend()"/>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="friends">
+					<p>Friends</p>
+					<div *ngFor="let friend of this.friends">
+            <a routerLink="/homeath/profile/{{ friend.username }}">
+              <img src="{{ this.getPhoto(friend.avatarFilePath) }}"
+                   (error)="$event.target.src=getPhoto('default_avatar')" alt="no"/>
+              <a style="padding-left: 10px; font-size: 16px;" routerLink="/homeath/profile/{{ friend.username }}">
+              {{ friend.username }}</a>
+            </a>
+					</div><br>
+          <a routerLink="/homeath/friends/{{ this.user.username }}">
+					<div class="all-friends" *ngIf="this.friends.length > 3">
+							...all friends
+					</div>
+          </a>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="tab-content profile-tab" id="myTabContent">
+					<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+						<div class="row">
+							<div class="col-md-6">
+								<label>Name</label>
+							</div>
+							<div class="col-md-6">
+								<p>{{ this.user.firstName }}</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Email</label>
+							</div>
+							<div class="col-md-6">
+								<p>{{ this.user.email }}</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Sex</label>
+							</div>
+							<div class="col-md-6">
+								<p>{{ this.user.sex }}</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Country</label>
+							</div>
+							<div class="col-md-6">
+								<p>{{ this.user.country }}</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>City</label>
+							</div>
+							<div class="col-md-6">
+								<p>{{ this.user.city }}</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label>Registered</label>
+							</div>
+							<div class="col-md-6">
+								<p>{{ this.user.regDate }}</p>
+							</div>
+						</div>
+					</div>
+					<br><br>
+				</div>
+				<!-- ------------------------------------------------------------------->
+				<div class="panel">
+					<div class="panel-heading"><a routerLink="/homeath/profile/{{ this.user.username }}/book-list">Favourite books </a>
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i></div>
+					<div class="panel-body" >
+						<div class="row">
+							<div class="col-md-4"  *ngFor="let book of this.favouriteBooks">
+								<div class="thumbnail">
+                  <a routerLink="/homeath/books/{{ book.bookId }}">
+                    <img alt="no img" src="{{ this.getPhoto(book.imagePath) }}"></a>
+									<div class="caption">
+										<a routerLink="/homeath/books/{{ book.bookId }}">
+										{{ book.title  }}</a>
+										<div class="authors" *ngFor="let author of book.authors">
+											<a (click)="navigateToAuthor(author)" style="cursor: pointer">
+											{{ author  }}</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<a *ngIf="this.favouriteBooks.length == 3" class="right-align"
+               routerLink="/homeath/profile/{{ this.user.username }}/book-list">...all favourite books </a>
+            <i *ngIf="this.favouriteBooks.length == 3" class="fa fa-arrow-right" aria-hidden="true">
+
+            </i>
+					</div>
+				</div>
+				<br><br>
+				<div class="panel">
+					<div class="panel-heading"><a routerLink="/homeath/profile/{{ this.user.username }}/book-list">Read books </a>
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i></div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-4" *ngFor="let book of this.readBooks">
+								<div class="thumbnail">
+                  <a routerLink="/homeath/books/{{ book.bookId }}">
+                    <img alt="no img" src="{{ this.getPhoto(book.imagePath) }}"></a>
+									<div class="caption">
+										<a routerLink="/homeath/books/{{ book.bookId }}">
+										{{ book.title  }}</a>
+										<div class="authors" *ngFor="let author of book.authors">
+                      <a (click)="navigateToAuthor(author)" style="cursor: pointer">
+                        {{ author  }}</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<a *ngIf="this.readBooks.length == 3"
+               class="right-align" routerLink="/homeath/profile/{{ this.user.username }}/book-list">...all read books </a>
+            <i *ngIf="this.readBooks.length == 3" class="fa fa-arrow-right" aria-hidden="true"></i>
+					</div>
+				</div>
+				<br><br>
+
+				<div class="panel">
+					<div class="panel-heading">
+						<a routerLink="/homeath/profile/{{ this.user.username }}/book-list">Reading books </a>
+						<i class="fa fa-angle-double-right" aria-hidden="true"></i>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-4" *ngFor="let book of this.readingBooks">
+								<div class="thumbnail">
+                  <a routerLink="/homeath/books/{{ book.bookId }}">
+                    <img alt="no img" src="{{ this.getPhoto(book.imagePath) }}"></a>
+                    <div class="caption">
+                      <a routerLink="/homeath/books/{{ book.bookId }}">
+                        {{ book.title  }}</a>
+                      <div class="authors" *ngFor="let author of book.authors">
+                        <a (click)="navigateToAuthor(author)" style="cursor: pointer">
+                          {{ author  }}</a>
+                      </div>
+                    </div>
+
+
+								</div>
+							</div>
+						</div>
+						<a *ngIf="this.readingBooks.length == 3" class="right-align"
+               routerLink="/homeath/profile/{{ this.user.username }}/book-list">...all reading books </a>
+            <i *ngIf="this.readingBooks.length == 3" class="fa fa-arrow-right" aria-hidden="true"></i>
+					</div>
+				</div>
+				<br><br>
+
+				<!-- ------------------------------------------------------------------->
+			</div>
+		</div>
+
+	</form>
+</div>
+
+<!-- modal where the image will appear -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="imageModal" role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body mb-0 p-0">
+        <img src="{{ this.getPhoto(this.user.avatarFilePath) }}"
+             (error)="$event.target.src=getPhoto('default_avatar')" alt="" style="width:100%">
+        <button type="button" class="btn" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true" style="font-size: 30px; color: whitesmoke"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="form-check" style="float: right">
+  <input hidden type="checkbox" #snow class="form-check-input" id="exampleCheck">
+  <label class="form-check-label" for="exampleCheck"><i class="fa fa-smile-o" aria-hidden="true"></i>
+    Happy new year!!!</label>
+</div>
+<style>
+  /* customizable snowflake styling */
+  .snowflake {
+    color: #fff;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    text-shadow: 0 0 5px #000;
+  }
+
+  @-webkit-keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}
+  @-webkit-keyframes snowflakes-shake{
+    0%,100%{-webkit-transform:translateX(0);
+    transform:translateX(0)}50%{-webkit-transform:translateX(80px);
+    transform:translateX(80px)}
+  }
+  @keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@keyframes snowflakes-shake{0%,100%{transform:translateX(0)}50%{transform:translateX(80px)}}.snowflake{position:fixed;top:-10%;z-index:9999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default;-webkit-animation-name:snowflakes-fall,snowflakes-shake;-webkit-animation-duration:10s,3s;-webkit-animation-timing-function:linear,ease-in-out;-webkit-animation-iteration-count:infinite,infinite;-webkit-animation-play-state:running,running;animation-name:snowflakes-fall,snowflakes-shake;animation-duration:10s,3s;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite;animation-play-state:running,running}.snowflake:nth-of-type(0){left:1%;-webkit-animation-delay:0s,0s;animation-delay:0s,0s}.snowflake:nth-of-type(1){left:10%;-webkit-animation-delay:1s,1s;animation-delay:1s,1s}.snowflake:nth-of-type(2){left:20%;-webkit-animation-delay:6s,.5s;animation-delay:6s,.5s}.snowflake:nth-of-type(3){left:30%;-webkit-animation-delay:4s,2s;animation-delay:4s,2s}.snowflake:nth-of-type(4){left:40%;-webkit-animation-delay:2s,2s;animation-delay:2s,2s}.snowflake:nth-of-type(5){left:50%;-webkit-animation-delay:8s,3s;animation-delay:8s,3s}.snowflake:nth-of-type(6){left:60%;-webkit-animation-delay:6s,2s;animation-delay:6s,2s}.snowflake:nth-of-type(7){left:70%;-webkit-animation-delay:2.5s,1s;animation-delay:2.5s,1s}.snowflake:nth-of-type(8){left:80%;-webkit-animation-delay:1s,0s;animation-delay:1s,0s}.snowflake:nth-of-type(9){left:90%;-webkit-animation-delay:3s,1.5s;animation-delay:3s,1.5s}.snowflake:nth-of-type(10){left:25%;-webkit-animation-delay:2s,0s;animation-delay:2s,0s}.snowflake:nth-of-type(11){left:65%;-webkit-animation-delay:4s,2.5s;animation-delay:4s,2.5s}
+</style>
+<div *ngIf="snow.checked" class="snowflakes" aria-hidden="true">
+  <div class="snowflake">
+    ❅
+  </div>
+  <div class="snowflake">
+    ❆
+  </div>
+  <div class="snowflake">
+    ❅
+  </div>
+  <div class="snowflake">
+    ❆
+  </div>
+  <div class="snowflake">
+    ❅
+  </div>
+  <div class="snowflake">
+    ❆
+  </div>
+  <div class="snowflake">
+    ❅
+  </div>
+  <div class="snowflake">
+    ❆
+  </div>
+  <div class="snowflake">
+    ❅
+  </div>
+  <div class="snowflake">
+    ❆
+  </div>
+  <div class="snowflake">
+    ❅
+  </div>
+  <div class="snowflake">
+    ❆
+  </div>
+</div>

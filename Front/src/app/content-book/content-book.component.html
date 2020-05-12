@@ -1,0 +1,28 @@
+<div class="container pt-3">
+  <div class="row">
+    <div class="test col-md-6 mb-2" *ngFor="let book of books">
+      <a [routerLink]="[book.bookId]" class="blog-item">
+        <div class="container blog-item-color">
+          <div class="row">
+            <div class="col-3 p-0">
+              <img src="{{book.imagePath}}" alt="Example" class="book-logo"
+                   (error)="$event.target.src=getPhoto('default_book_photo')">
+            </div>
+            <div class="col-4 p-0">
+              <div class="book-item-content" >
+                <h3>{{book.title}}</h3>
+                <p>Author(s): {{book.authors}}</p>
+                <p>Genre: {{book.genres}}</p>
+                <p>Publish Date: {{book.releaseDate}}</p>
+<!--                <p>Language: {{book.language}}</p>-->
+<!--                <p>Pages: {{book.pages}}</p>-->
+<!--                <p>Description: {{book.description}}</p>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <ngb-pagination class="d-flex justify-content-center" [collectionSize]="collectionSize" [pageSize]="booksPerPage" [(page)]="page" [boundaryLinks]="true" (pageChange)="onPageChanged($event)"></ngb-pagination>
+</div>
