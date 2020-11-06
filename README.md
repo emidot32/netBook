@@ -7,10 +7,10 @@ Training project for the Java course 2019 by Netcracker.
 
 ***Technologies***:
 
-DB - PostgreSQL 11.6
+* DB - `PostgreSQL 11.6`
 
-Back-end - Spring Boot, Spring JDBC, Maven, JUnit.
+* Back-end - `Spring Boot`, `Spring JDBC`, `Maven`, `JUnit`.
 
-Front-end - Angular 8, HTML, CSS, Bootstrap, npm.
+* Front-end - `Angular 8`, `HTML`, `CSS`, `Bootstrap`, `npm`.
 
-For deploying - Heroku. 
+* For deploying - `Heroku`. 
